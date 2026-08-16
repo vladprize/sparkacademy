@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#000000" />
+    <title>SPARK Academy</title>
+    <meta name="description" content="Внутренняя академия отдела продаж SPARK" />
+    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="apple-mobile-web-app-title" content="SPARK Academy" />
+    <style>html,body,#root{height:100%}body{margin:0;background:#000}</style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
+
+{
+  "name": "spark-academy",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "lucide-react": "^0.417.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.1",
+    "vite": "^5.4.2"
+  }
+}
+
+# SPARK Academy — деплой на Vercel
+
+Внутренняя академия отдела продаж SPARK. Обычный сайт (PWA): открывается в браузере телефона, ставится «на экран» как приложение.
+
+Эта версия — с **демо-логином** (данные хранятся в памяти браузера, на сервере ничего не сохраняется). Годится, чтобы сегодня же показать команде. Логин по рабочей почте с реальной проверкой и сохранением прогресса — следующий шаг (Supabase).
+
+**Демо-вход:** `vlad@spark-cgi.com` / `Vladtest` (или кнопка «Демо-вход»). Любая корректная почта тоже пускает — как Junior.
+
+---
+
+## Способ 1 — через сайт Vercel (без терминала, самый простой)
+
+1. Распакуйте архив в папку.
+2. Зайдите на **vercel.com**, войдите (можно через GitHub/Google).
+3. Проще всего — залить папку в репозиторий GitHub и в Vercel нажать **Add New → Project → Import** этот репозиторий. Vercel сам определит Vite.
+4. Настройки сборки Vercel подставит автоматически:
+   - Framework Preset: **Vite**
+   - Build Command: `npm run build`
+   - Output Directory: `dist`
+5. Нажмите **Deploy**. Через ~1 минуту получите ссылку вида `spark-academy-xxx.vercel.app` — её уже можно открывать с телефона.
+
+## Способ 2 — через терминал (Vercel CLI)
+
+```bash
+npm install -g vercel     # один раз
+cd spark-academy
+vercel                    # первый деплой (превью)
+vercel --prod             # боевой деплой
+```
+
+Локально проверить перед заливкой:
+```bash
+npm install
+npm run dev               # откроется localhost
+```
+
+---
+
+## Свой домен (напр. academy.spark-cgi.com)
+
+1. В проекте на Vercel: **Settings → Domains → Add** → введите `academy.spark-cgi.com`.
+2. Vercel покажет DNS-запись (CNAME). Добавьте её у регистратора домена `spark-cgi.com`.
+3. Через несколько минут домен и HTTPS поднимутся автоматически.
+
+## Установка на телефон (как приложение)
+
+- **Android/Chrome:** откройте сайт → меню ⋮ → «Установить приложение».
+- **iPhone/Safari:** откройте сайт → «Поделиться» → «На экран „Домой“».
+  Появится иконка SPARK, приложение откроется на весь экран.
+
+---
+
+## Что дальше (когда понадобится)
+
+- **Логин по рабочей почте (magic-link)** и ограничение домена `@spark-cgi.com` — Supabase Auth / Clerk.
+- **Сохранение прогресса** каждого сотрудника на сервере — Supabase/Postgres.
+- **Админ-дэшборд** — кто на какой стадии обучения и аттестации.
+
+## Стек
+
+Vite + React 18 + lucide-react. Живой ИИ и внешние API не используются — тесты статические, поэтому ключи/прокси не нужны, деплой простой и безопасный.
+
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+
+export default defineConfig({
+  plugins: [react()],
+});
